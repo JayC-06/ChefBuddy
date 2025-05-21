@@ -26,6 +26,7 @@ const typeDefs = `
   type Mutation {
     addProfile(input: ProfileInput!): Auth
     login(email: String!, password: String!): Auth
+    removeProfile(profileId: ID!): Profile
 
   }
 `;

@@ -1,0 +1,15 @@
+.home-container {
+    background-image: url("../images/ChefBuddy.png") ;
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-repeat: no-repeat;
+}
+@media (min-width: 1368px ){ 
+    .home-container {
+    background-size: contain; 
+    }
+}

@@ -58,9 +58,6 @@ const resolvers = {
       const token = signToken(profile.name, profile.email, profile._id);
       return { token, profile };
     },
-    
-      throw AuthenticationError;
-    },
     removeProfile: async (_parent: any, _args: any, context: Context): Promise<Profile | null> => {
       if (context.user) {
         return await Profile.findOneAndDelete({ _id: context.user._id });
@@ -68,7 +65,7 @@ const resolvers = {
       throw AuthenticationError;
     },
     
-  },
-};
+  }
+}
 
 export default resolvers;
