@@ -1,8 +1,9 @@
 import { Profile } from '../models/index.js';
 import { signToken, AuthenticationError } from '../utils/auth.js';
+import FridgeItem from '../models/fridgeModel.js';
 import { IResolvers } from '@graphql-tools/utils';
 import { AuthRequest } from '../utils/auth'
-import  Recipe from '../models/recipeModel';
+import  Recipe from '../models/RecipeModel.js';
 
 interface Profile {
   _id: string;
@@ -17,6 +18,11 @@ const resolvers: IResolvers = {
     me: async (_, __, context: { req: AuthRequest }) => {
       if (!context.req.user) throw new AuthenticationError('Not authenticated');
       return await Profile.findById(context.req.user._id).populate('savedRecipes');
+    },
+    getFridge: async (_parent: any, _args: any, context: { user: any }) => {
+      if (!context.user) throw new AuthenticationError('You must be logged in to view your fridge.');
+      return await FridgeItem.find({ userId: context.user._id }).populate('ingredient');
+      },
     },
     getRecipeById: async (_, { id }) => {
       return await Recipe.findById(id);

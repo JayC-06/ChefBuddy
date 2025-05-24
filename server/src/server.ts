@@ -9,6 +9,7 @@ import { typeDefs, resolvers } from './schemas/index.js';
 import { authenticateToken } from './utils/auth.js';
 import recipeRoutes from './api/recipes.js';
 import historyRoutes from './api/history.js';
+import fridgeRoutes from './api/myFridge.js';
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ const startApolloServer = async () => {
   // ✅ Mount REST API route
   app.use('/api/recipes', recipeRoutes);
   app.use('/api/history', historyRoutes);
+  app.use('/api/fridge', fridgeRoutes);
 
   // ✅ GraphQL setup
   app.use(
