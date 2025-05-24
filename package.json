@@ -14,22 +14,23 @@
     "seed": "cd server && npm run seed",
     "build": "concurrently \"cd server && npm run build\" \"cd client && npm run build\"",
     "render-build": "npm install && npm run build",
-    "lint": "eslint src --ext js,tsx --report-unused-disable-directives --max-warnings 0"
+    "lint": "eslint ./server/src --ext js,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/cors": "^2.8.18",
-    "concurrently": "^8.2.2",
     "wait-on": "^7.2.0"
   },
   "dependencies": {
-    "openai": "^4.100.0",
-     "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@eslint/js": "^9.27.0",
+    "concurrently": "^8.2.2",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "eslint": "^8.45.0",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.3"
+    "eslint-plugin-react-refresh": "^0.4.3",
+    "openai": "^4.100.0"
   }
 }

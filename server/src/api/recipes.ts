@@ -2,9 +2,11 @@ import express from 'express';
 import { Request, Response } from 'express';
 import { OpenAI } from 'openai';
 import recipeHistory from '../models/RecipeHistory.js';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const router = express.Router();
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 router.post('/', async (req: Request, res: Response) => {
   const { ingredients } = req.body;
