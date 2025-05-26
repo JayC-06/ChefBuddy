@@ -1,41 +1,50 @@
-import express from 'express';
-import { Request, Response } from 'express';
-import { OpenAI } from 'openai';
-import recipeHistory from '../models/RecipeHistory.js';
+// import dotenv from 'dotenv';
+// import path from 'node:path';
+// import { fileURLToPath } from 'url';
 
-const router = express.Router();
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
 
-router.post('/', async (req: Request, res: Response) => {
-  const { ingredients } = req.body;
+// dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
-  if (!Array.isArray(ingredients) || ingredients.length === 0) {
-    return res.status(400).json({ error: 'Please provide a list of ingredients.' });
-  }
+// import express from 'express';
+// import { Request, Response } from 'express';
+// import { OpenAI } from 'openai';
+// import recipeHistory from '../models/RecipeHistory.js';
 
-  try {
-    const prompt = `
-    Suggest a list of recipes based on the following ingredients: ${ingredients.join(', ')}.
-    Please provide the recipes in JSON format, including the recipe name, ingredients, measurements and instructions.
-    `;
+// const router = express.Router();
+// const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
 
-    const response = await openai.chat.completions.create({
-      model: 'gpt-4',
-      messages: [{ role: 'user', content: prompt }],
-    });
+// router.post('/', async (req: Request, res: Response) => {
+//   const { ingredients } = req.body;
 
-    const result = response.choices[0].message?.content;
+//   if (!Array.isArray(ingredients) || ingredients.length === 0) {
+//     return res.status(400).json({ error: 'Please provide a list of ingredients.' });
+//   }
 
-    await recipeHistory.create({
-      ingredients,
-      response: result,
-    });
+//   try {
+//     const prompt = `
+//     Suggest a list of recipes based on the following ingredients: ${ingredients.join(', ')}.
+//     Please provide the recipes in JSON format, including the recipe name, ingredients, measurements and instructions.
+//     `;
 
-    return res.json({ recipes: result });
-  } catch (error) {
-    console.error('Error generating recipes:', error);
-    return res.status(500).json({ error: 'An error occurred while generating recipes.' });
-  }
-});
+//     const response = await openai.chat.completions.create({
+//       model: 'gpt-4',
+//       messages: [{ role: 'user', content: prompt }],
+//     });
 
-export default router;
+//     const result = response.choices[0].message?.content;
+
+//     await recipeHistory.create({
+//       ingredients,
+//       response: result,
+//     });
+
+//     return res.json({ recipes: result });
+//   } catch (error) {
+//     console.error('Error generating recipes:', error);
+//     return res.status(500).json({ error: 'An error occurred while generating recipes.' });
+//   }
+// });
+
+// export default router;

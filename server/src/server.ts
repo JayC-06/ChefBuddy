@@ -1,16 +1,24 @@
-import express, { Request, Response } from 'express';
+import { fileURLToPath } from 'url';
 import path from 'node:path';
 import dotenv from 'dotenv';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
+
+console.log('MONGODB_URI:', process.env.MONGODB_URI);
+
+import express, { Request, Response } from 'express';
 import cors from 'cors';
 import db from './config/connection.js';
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 import { typeDefs, resolvers } from './schemas/index.js';
 import { authenticateToken } from './utils/auth.js';
-import recipeRoutes from './api/recipes.js';
-import historyRoutes from './api/history.js';
+// import recipeRoutes from './api/recipes.js';
+// import historyRoutes from './api/history.js';
 
-dotenv.config();
 
 const server = new ApolloServer({
   typeDefs,
@@ -29,8 +37,10 @@ const startApolloServer = async () => {
   app.use(express.json());
 
   // ✅ Mount REST API route
-  app.use('/api/recipes', recipeRoutes);
-  app.use('/api/history', historyRoutes);
+  // app.use('/api/recipes', recipeRoutes);
+  // app.use('/api/history', historyRoutes);
+
+
 
   // ✅ GraphQL setup
   app.use(

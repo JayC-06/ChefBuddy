@@ -36,8 +36,6 @@ const RecipeGenerator = () => {
 
   return (
     <div >
-      <h1>AI Recipe Generator</h1>
-
       {/* Ingredient Input */}
       <div>
         <input

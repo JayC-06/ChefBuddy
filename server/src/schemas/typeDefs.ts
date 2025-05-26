@@ -35,6 +35,7 @@ const typeDefs = gql`
   }
 
   type Query {
+    generateRecipes(ingredients: [String!]!): [Recipe!]!
     profiles: [User]
     profile(profileId: ID!): User
     me: User

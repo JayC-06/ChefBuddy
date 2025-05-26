@@ -1,3 +1,4 @@
+import RecipeGenerator from "../components/generateRecipes";
 
 const Home = () => {
   return (
@@ -18,7 +19,7 @@ const Home = () => {
         <div className="col s12 m4">
           <div className="card">
             <div className="card-content">
-              <span className="card-title deep-orange-text">Find Recipes</span>
+              <span className="card-title deep-orange-text">Find Recipes<RecipeGenerator/></span>
               <p>Discover new recipes based on ingredients you have at home.</p>
             </div>
           </div>
