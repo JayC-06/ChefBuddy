@@ -15,8 +15,10 @@ const typeDefs = gql`
     ingredients: [String]!
     instructions: [String]!
     ratings: [Int]
-    comments: [String]
+    comments: [Comment]
     favorite: Boolean
+    mealType: String
+    createdAt: String
   }
 
   type Comment {
@@ -47,18 +49,6 @@ type FridgeItem {
   ingredient: Ingredient
 }
 
-type RecipeHistory {
-  profile: Profile
-  _id: ID!
-  title: String
-  instructions: [String]
-  ingredients: [String]
-  response: String
-  favorite: Boolean
-  mealType: String
-  createdAt: String!
-}
-
   type Query {
     profiles: [Profile]
     profile(profileId: ID!): Profile
@@ -87,3 +77,15 @@ type RecipeHistory {
 `;
 
 export default typeDefs;
+
+// type RecipeHistory {
+//   profile: Profile
+//   _id: ID!
+//   title: String
+//   instructions: [String]
+//   ingredients: [String]
+//   response: String
+//   favorite: Boolean
+//   mealType: String
+//   createdAt: String!
+// }

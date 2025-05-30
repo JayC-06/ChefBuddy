@@ -253,6 +253,8 @@ nav ul a:hover {
 
 .card .card-content {
   border-radius: 6px;
+  overflow-y: scroll !important;
+  max-height: 650px !important;
 }
 
 .card:hover {

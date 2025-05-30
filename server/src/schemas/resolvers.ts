@@ -134,11 +134,11 @@ const resolvers: IResolvers = {
       }
 
       // Map each recipe with a valid ObjectId
-      const recipesWithIds = parsed.map((r: any) => {
-        const _id = new mongoose.Types.ObjectId();
+      const recipesWithIds = parsed.map((r: any) => { // use 'any' for flexibility; r: is a recipe object
+        const _id = new mongoose.Types.ObjectId(); // generate a new ObjectId for each recipe
         return {
-        _id,
-        title: r.title,
+        _id, // use the generated ObjectId
+        title: r.title, // r.title is expected to be a string and required
         ingredients: r.ingredients || [],
         instructions: r.instructions || [],
         ratings: r.ratings || [],
@@ -214,7 +214,7 @@ const resolvers: IResolvers = {
       const updatedRecipe = await Recipe.findByIdAndUpdate(
         recipeId,
         {
-          $push: {
+          $push: { // use $push to add a new comment
             comments: {
               user: context.req.user.username,
               text: text,

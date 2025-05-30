@@ -131,7 +131,7 @@ const RecipeGenerator = () => {
         </p>
       )}
       {recipes && (
-        <div className="mt-4">
+        <div className="mt-4" >
           {Array.isArray(recipes) ? (
             recipes.map((recipe) => (
               <div>
