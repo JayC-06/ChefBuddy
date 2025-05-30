@@ -1,6 +1,10 @@
-
+import mongoose from "mongoose";
 import { Profile } from "../models/index.js";
-import { signToken, AuthenticationError, UserExistsError } from "../utils/auth.js";
+import {
+  signToken,
+  AuthenticationError,
+  UserExistsError,
+} from "../utils/auth.js";
 import FridgeItem from "../models/fridgeModel.js";
 import { IResolvers } from "@graphql-tools/utils";
 import { AuthRequest } from "../utils/auth";
@@ -40,19 +44,37 @@ const resolvers: IResolvers = {
         "savedRecipes"
       );
     },
-    myRecipePath: async (_parent: any, _args: any, context: any ) => {
-      if (!context.user) throw new AuthenticationError('You must be logged in.');
-      return await getUserRecipePath  (context.user._id);
+    myRecipePath: async (_parent: any, _args: any, context: any) => {
+      if (!context.user)
+        throw new AuthenticationError("You must be logged in.");
+      return await getUserRecipePath(context.user._id);
     },
-    myRecipeHistory: async (_parent: any, _args: any, context: { user: any }) => {
-      if (!context.user) throw new AuthenticationError('You must be logged in to view your recipe history.');
-      return await getUserRecipeHistory(context.user._id);  
+    myRecipeHistory: async (
+      _parent: any,
+      _args: any,
+      context: { user: any }
+    ) => {
+      if (!context.user)
+        throw new AuthenticationError(
+          "You must be logged in to view your recipe history."
+        );
+      return await getUserRecipeHistory(context.user._id);
     },
-    myFavoriteRecipes: async (_parent: any, _args: any, context: { user: any }) => {
-      if (!context.user) throw new AuthenticationError('You must be logged in to view your favorite recipes.');
-      return await RecipeHistory.find({ profile: context.user._id, favorite: true })
-      .sort({ createdAt: -1 })
-      .populate('profile');
+    myFavoriteRecipes: async (
+      _parent: any,
+      _args: any,
+      context: { user: any }
+    ) => {
+      if (!context.user)
+        throw new AuthenticationError(
+          "You must be logged in to view your favorite recipes."
+        );
+      return await RecipeHistory.find({
+        profile: context.user._id,
+        favorite: true,
+      })
+        .sort({ createdAt: -1 })
+        .populate("profile");
     },
     getFridge: async (_parent: any, _args: any, context: { user: any }) => {
       if (!context.user)
@@ -68,7 +90,8 @@ const resolvers: IResolvers = {
     },
     generateRecipes: async (
       _: any,
-      { ingredients }: { ingredients: string[] }
+      { ingredients }: { ingredients: string[] },
+      context: { user: any } // include context if saving to user profile or history
     ) => {
       console.log(
         "generateRecipes resolver called with ingredients:",
@@ -94,7 +117,7 @@ const resolvers: IResolvers = {
         messages: [{ role: "user", content: prompt }],
       });
 
-      console.log("OpenAI Raw Response:", JSON.stringify(response, null, 2));
+      // console.log("OpenAI Raw Response:", JSON.stringify(response, null, 2));
 
       const result = response.choices[0].message?.content;
 
@@ -110,13 +133,32 @@ const resolvers: IResolvers = {
         throw new Error("OpenAI response was not valid JSON.");
       }
 
+      // Map each recipe with a valid ObjectId
+      const recipesWithIds = parsed.map((r: any) => {
+        const _id = new mongoose.Types.ObjectId();
+        return {
+        _id,
+        title: r.title,
+        ingredients: r.ingredients || [],
+        instructions: r.instructions || [],
+        ratings: r.ratings || [],
+        comments: r.comments || [],
+        favorite: false,
+        profile: context.user?._id || null,
+        createdAt: new Date(),
+        response: JSON.stringify(r),
+        }
+      });
+
+      await RecipeHistory.insertMany(recipesWithIds);
+
       // // Optionally save to DB
       // await recipeHistory.create({
       //   ingredients,
       //   response: result,
       // });
 
-      return parsed;
+      return recipesWithIds;
     },
   },
 
@@ -177,15 +219,15 @@ const resolvers: IResolvers = {
               user: context.req.user.username,
               text: text,
               createdAt: new Date().toISOString(),
-            }
-          }
+            },
+          },
         },
         { new: true }
       );
       if (!updatedRecipe) throw new Error("Recipe not found");
       return updatedRecipe;
-     },
-     
+    },
+
     addFridgeItem: async (_, { name }, context: { user: any }) => {
       if (!context.user)
         throw new AuthenticationError(
@@ -226,8 +268,12 @@ const resolvers: IResolvers = {
     },
 
     toggleFavorite: async (_: any, { recipeId }: { recipeId: string }) => {
+      console.log("Toggling favorite for recipeId:", recipeId);
       const recipe = await RecipeHistory.findById(recipeId);
-      if (!recipe) throw new Error('Recipe not found');
+      if (!recipe) {
+        console.log("Recipe not found for ID:", recipeId);
+        throw new Error("Recipe not found");
+      }
       recipe.favorite = !recipe.favorite;
       await recipe.save();
       return recipe;
