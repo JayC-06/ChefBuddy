@@ -1,5 +1,3 @@
-
-
 /* Primary color: deep-orange #ff5722 */
 .deep-orange {
   background-color: #ff5722 !important;
@@ -30,19 +28,11 @@
   flex-direction: column;
 }
 
-/* Removed before and after pseudo-elements with animations */
-
 /* Animated Gradient for Nav and Footer */
 .nav-gradient {
   background: linear-gradient(135deg, 
-    #8B0000, #a00000, #b50000, #a00000, #8B0000,
-    #990000, #8B0000
   );
   background-size: 300% 300%;
-  animation: gradient-animation 8s ease infinite;
-  box-shadow: 0 2px 12px rgba(139, 0, 0, 0.3);
-  position: relative;
-  overflow: hidden;
 }
 
 .nav-gradient::after {
@@ -66,8 +56,6 @@
 
 .footer-gradient {
   background: linear-gradient(135deg, 
-    #8B0000, #a00000, #b50000, #a00000, #8B0000,
-    #990000, #8B0000
   );
   background-size: 300% 300%;
   animation: gradient-animation 8s ease infinite;
@@ -401,114 +389,9 @@ textarea.materialize-textarea:focus:not([readonly]) {
   color: #ff5722 !important;
 }
 
-/*------------------------------------------------------------------------------
-  4.2 SELECTION ELEMENTS
-------------------------------------------------------------------------------*/
-
-/* Checkbox and Radio styles */
-[type="checkbox"]:checked + span:not(.lever)::before {
-  border-right: 2px solid #ff5722;
-  border-bottom: 2px solid #ff5722;
-}
-
-[type="radio"]:checked + span::after {
-  background-color: #ff5722;
-}
-
-/* Switch */
-.switch label input[type=checkbox]:checked + .lever {
-  background-color: #ffff8d;
-}
-.switch label input[type=checkbox]:checked + .lever::after {
-  background-color: #ffff00;
-}
-
-/*==============================================================================
-  5. UI COMPONENTS
-==============================================================================*/
-
-/*------------------------------------------------------------------------------
-  5.1 COLLECTIONS & DROPDOWNS
-------------------------------------------------------------------------------*/
-
-/* Collection items */
-.collection .collection-item.active {
-  background-color: #ff5722;
-  color: #fff;
-}
-
-/* Dropdown */
-.dropdown-content li > a, 
-.dropdown-content li > span {
-  color: #ff5722;
-}
-
-/*------------------------------------------------------------------------------
-  5.2 TABS & BADGES
-------------------------------------------------------------------------------*/
-
-/* Tabs */
-.tabs .tab a {
-  color: rgba(255, 87, 34, 0.7);
-}
-
-.tabs .tab a:hover,
-.tabs .tab a.active {
-  color: #ff5722;
-}
-
-.tabs .indicator {
-  background-color: #ff5722;
-}
-
-/* Badges */
-span.badge.new {
-  background-color: #ffff00;
-  color: #333;
-}
-
-/*------------------------------------------------------------------------------
-  5.3 FEEDBACK & LOADERS
-------------------------------------------------------------------------------*/
-
-/* Toast */
-.toast {
-  background-color: #ff5722;
-}
-
-/* Preloader */
-.spinner-layer {
-  border-color: #ff5722;
-}
-
-/* Progress bar */
-.progress .determinate,
-.progress .indeterminate {
-  background-color: #ff5722;
-}
-
 /*==============================================================================
   6. UTILITY CLASSES
 ==============================================================================*/
-
-/* Highlight text selection */
-::selection {
-  background: rgba(255, 255, 0, 0.5);
-  color: #333;
-}
-
-/* Custom utility classes for the theme */
-.primary-border {
-  border: 2px solid #000000 !important;
-}
-
-.accent-border {
-  border: 2px solid #ffff00 !important;
-}
-
-.theme-shadow {
-  box-shadow: 0 4px 10px rgba(255, 87, 34, 0.3) !important;
-}
 
 /* Minimum height for full page content */
 .min-100-vh {

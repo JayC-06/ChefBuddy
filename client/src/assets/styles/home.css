@@ -17,26 +17,6 @@
   background-color: #cecece;
 }
 
-.btn.btn-squared {
-  border-radius: 0;
-}
-
-.btn.btn-sm {
-  font-size: 0.85rem;
-  padding: 0.3rem 0.9rem;
-}
-
-.btn.btn-lg {
-  font-size: 1.25rem;
-  padding: 0.8rem 1.4rem;
-}
-
-.btn.btn-block {
-  width: 100%;
-  display: block;
-  text-align: center;
-}
-
 .btn.btn-primary {
   background-color: #2d3e50;
   color: #d9e9e8;
@@ -44,69 +24,6 @@
 
 .btn.btn-primary:hover {
   background-color: #57779a;
-}
-
-.btn.btn-danger {
-  background-color: #e64c66;
-  color: #ffffff;
-}
-
-.btn.btn-danger:hover {
-  background-color: #ee8294;
-}
-
-.btn.btn-info {
-  background-color: #1bbc9b;
-  color: #ffffff;
-}
-
-.btn.btn-info:hover {
-  background-color: #31e1bd;
-}
-
-.btn.btn-light {
-  background-color: #d9e9e8;
-  color: #1a1a1a;
-}
-
-.btn.btn-light:hover {
-  background-color: #84b8b4;
-}
-
-.btn.btn-dark {
-  background-color: #1a1a1a;
-  color: #d9e9e8;
-}
-
-.btn.btn-dark:hover {
-  background-color: #5f5f5f;
-}
-
-.btn.btn-white {
-  background-color: #ffffff;
-  color: #1a1a1a;
-}
-
-.btn.btn-white:hover {
-  background-color: #cccccc;
-}
-
-.btn.btn-black {
-  background-color: #000000;
-  color: #ffffff;
-}
-
-.btn.btn-black:hover {
-  background-color: #666666;
-}
-
-.btn.btn-link {
-  background-color: #1b89bc;
-  color: #ffffff;
-}
-
-.btn.btn-link:hover {
-  background-color: #31a9e1;
 }
 
 .card {
@@ -132,15 +49,6 @@
   display: flex;
   align-items: center;
 }
-
-.card.card-rounded {
-  border-radius: 0.3rem;
-}
-
-.card.card-rounded .card-header {
-  border-radius: calc(0.18rem - 1px) calc(0.18rem - 1px) 0 0;
-}
-
 
 .home-container {
     background-image: url("./assets/images/ChefBuddy.png") ;
