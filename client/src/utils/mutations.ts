@@ -13,7 +13,6 @@ export const REGISTER = gql`
   }
 `;
 
-
 export const LOGIN_USER = gql`
   mutation login($email: String!, $password: String!) {
     login(email: $email, password: $password) {
@@ -41,6 +40,19 @@ export const TOGGLE_FAVORITE = gql`
     toggleFavorite(recipeId: $recipeId) {
       _id
       favorite
+    }
+  }
+`;
+
+export const ADD_COMMENT = gql`
+  mutation AddComment($recipeId: ID!, $text: String!) {
+    addComment(recipeId: $recipeId, text: $text) {
+      _id
+      comments {
+        username
+        text
+        createdAt
+      }
     }
   }
 `;

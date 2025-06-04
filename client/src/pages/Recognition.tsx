@@ -11,7 +11,7 @@ const Recognition = () => {
 >
   <div className="card" style={{ width: '400px' }}>
     <div className="card-content">
-      <span className="card-title deep-orange-text">The Recognition award goes to...</span>
+      <span className="card-title deep-orange-text">The Chef of the Week is...</span>
       <p>JOHN BROWN!!!</p>
     </div>
   </div>

@@ -8,7 +8,6 @@
 ![Screenshot_2-6-2025_132613_chefbuddy-as26 onrender com](https://github.com/user-attachments/assets/4bf03220-4615-4989-8d88-9b413182f937)
 
 
-
 ## 🚀 Features
 
 - 🧾 **Ingredient-Based Recipe Generator**  

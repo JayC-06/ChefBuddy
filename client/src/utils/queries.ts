@@ -44,7 +44,7 @@ export const GENERATE_RECIPES = gql`
 `;
 
 export const GET_FAVORITE_RECIPES = gql`
-  query GetFavoriteRecipes {
+  query myFavoriteRecipes {
     myRecipeHistory {
     _id
     title
@@ -53,6 +53,11 @@ export const GET_FAVORITE_RECIPES = gql`
     favorite
     createdAt
     mealType
+    comments {
+      username
+      text
+      createdAt
     }
   }
+}
 `;

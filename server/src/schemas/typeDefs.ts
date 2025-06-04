@@ -15,7 +15,7 @@ const typeDefs = gql`
     ingredients: [String]!
     instructions: [String]!
     ratings: [Int]
-    comments: [String]
+    comments: [Comment] 
     favorite: Boolean
   }
 

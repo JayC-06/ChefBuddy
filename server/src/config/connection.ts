@@ -1,35 +1,3 @@
-// import { fileURLToPath } from 'url';
-// import path from 'node:path';
-// import dotenv from 'dotenv';
-// import mongoose from 'mongoose';
-
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = path.dirname(__filename);
-
-// // Load environment variables from the .env file
-// dotenv.config({ path: path.resolve(__dirname, '../../src/.env') });
-// console.log('MONGODB_URI:', process.env.MONGODB_URI);
-// console.log('ENV loaded from:', path.resolve(__dirname, '../../src/.env'));
-
-// if (!process.env.MONGODB_URI) {
-//   throw new Error(
-//     "❌ MONGODB_URI is not defined. Check your .env and path loading."
-//   );
-// }
-
-// const MONGODB_URI = process.env.MONGODB_URI || '';
-
-// const db = async (): Promise<typeof mongoose.connection> => {
-//   try {
-//     console.log('MONGODB_URI right before connect:', MONGODB_URI);
-//     await mongoose.connect(MONGODB_URI);
-//     console.log('Database connected.');
-//     return mongoose.connection;
-//   } catch (error) {
-//     console.error('Database connection error:', error);
-//     throw new Error('Database connection failed.');
-//   }
-// };
 
 // export default db;
 import { fileURLToPath } from "url";

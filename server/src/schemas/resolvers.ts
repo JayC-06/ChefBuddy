@@ -41,18 +41,36 @@ const resolvers: IResolvers = {
       );
     },
     myRecipePath: async (_parent: any, _args: any, context: any) => {
-      if (!context.user) throw new AuthenticationError('You must be logged in.');
+      if (!context.user)
+        throw new AuthenticationError("You must be logged in.");
       return await getUserRecipePath(context.user._id);
     },
-    myRecipeHistory: async (_parent: any, _args: any, context: { user: any }) => {
-      if (!context.user) throw new AuthenticationError('You must be logged in to view your recipe history.');
+    myRecipeHistory: async (
+      _parent: any,
+      _args: any,
+      context: { user: any }
+    ) => {
+      if (!context.user)
+        throw new AuthenticationError(
+          "You must be logged in to view your recipe history."
+        );
       return await getUserRecipeHistory(context.user._id);
     },
-    myFavoriteRecipes: async (_parent: any, _args: any, context: { user: any }) => {
-      if (!context.user) throw new AuthenticationError('You must be logged in to view your favorite recipes.');
-      return await RecipeHistory.find({ profile: context.user._id, favorite: true })
+    myFavoriteRecipes: async (
+      _parent: any,
+      _args: any,
+      context: { user: any }
+    ) => {
+      if (!context.user)
+        throw new AuthenticationError(
+          "You must be logged in to view your favorite recipes."
+        );
+      return await RecipeHistory.find({
+        profile: context.user._id,
+        favorite: true,
+      })
         .sort({ createdAt: -1 })
-        .populate('profile');
+        .populate("profile");
     },
     getFridge: async (_parent: any, _args: any, context: { user: any }) => {
       if (!context.user)
@@ -80,8 +98,8 @@ const resolvers: IResolvers = {
 
       const prompt = `
         Suggest a list of recipes based on the following ingredients: ${ingredients.join(
-        ", "
-      )}.
+          ", "
+        )}.
         Please provide the recipes in JSON format, including the recipe name, ingredients, measurements, instructions, category, calories, and macros.
         Please provide detailed instructions for each recipe, including preparation and cooking times.
         The recipes can include more ingredients than those provided, but should primarily use the given ingredients.
@@ -103,9 +121,11 @@ const resolvers: IResolvers = {
         messages: [
           {
             role: "system",
-            content: "Respond only with raw JSON. Do not include markdown formatting or explanation.",
+            content:
+              "Respond only with raw JSON. Do not include markdown formatting or explanation.",
           },
-          { role: "user", content: prompt }],
+          { role: "user", content: prompt },
+        ],
       });
 
       // console.log("OpenAI Raw Response:", JSON.stringify(response, null, 2));
@@ -117,7 +137,7 @@ const resolvers: IResolvers = {
       }
 
       // clean markdown formatting if present
-      const cleaned = result.replace(/```json|```/g, '').trim();
+      const cleaned = result.replace(/```json|```/g, "").trim();
 
       let parsed;
       try {
@@ -132,7 +152,7 @@ const resolvers: IResolvers = {
         const nutrition = recipe.nutritionalInfo || {};
 
         const normalize = (value: any) =>
-          typeof value === 'string' ? value : `${value}`;
+          typeof value === "string" ? value : `${value}`;
 
         return {
           ...recipe,
@@ -181,8 +201,12 @@ const resolvers: IResolvers = {
       return { token, profile };
     },
 
-    saveRecipe: async (_, { mealType, title, ingredients, instructions }, context: AuthRequest ) => {
-      console.log("context", context );
+    saveRecipe: async (
+      _,
+      { mealType, title, ingredients, instructions },
+      context: AuthRequest
+    ) => {
+      console.log("context", context);
       if (!context.user) throw new AuthenticationError("Not authenticated");
       const newRecipe = await RecipeHistory.create({
         mealType,
@@ -194,30 +218,26 @@ const resolvers: IResolvers = {
       return newRecipe;
     },
 
-    addComment: async (
-      _,
-      { recipeId, text },
-      context: { req: AuthRequest }
-    ) => {
-      if (!context.req.user) throw new AuthenticationError("Not authenticated");
+    addComment: async ( _, { recipeId, text }, context) => {
+      if (!context.user) throw new AuthenticationError("Not authenticated");
 
-      const updatedRecipe = await Recipe.findByIdAndUpdate(
+      const comment = {
+        username: context.user.username,
+        text,
+        createdAt: new Date().toISOString(),
+      };
+
+      const updatedRecipe = await RecipeHistory.findByIdAndUpdate(
         recipeId,
-        {
-          $push: {
-            comments: {
-              user: context.req.user.username,
-              text: text,
-              createdAt: new Date().toISOString(),
-            }
-          }
-        },
+        { $push: { comments: comment } },
         { new: true }
       );
+
       if (!updatedRecipe) throw new Error("Recipe not found");
+
       return updatedRecipe;
-     },
-     
+    },
+
     addFridgeItem: async (_, { name }, context: { user: any }) => {
       if (!context.user)
         throw new AuthenticationError(
@@ -257,43 +277,51 @@ const resolvers: IResolvers = {
       return deletedItem;
     },
 
-    toggleFavorite: async (_: any, { recipeId }: { recipeId: string }, context: AuthRequest ) => {
-    if (!context.user) throw new AuthenticationError("Not authenticated");
+    toggleFavorite: async (
+      _: any,
+      { recipeId }: { recipeId: string },
+      context: AuthRequest
+    ) => {
+      if (!context.user) throw new AuthenticationError("Not authenticated");
+
       const recipe = await RecipeHistory.findById(recipeId);
-      if (!recipe) throw new Error('Recipe not found');
-      // const isFavorite = recipe.favorite;
-      // recipe.favorite = !recipe.favorite;
-      // await recipe.save();
+      if (!recipe) throw new Error("Recipe not found");
+
+      // Check if the user profile exists and if the recipe is already a favorite
+      const userId = context.user?._id;
+      if (!userId) throw new AuthenticationError("User ID missing in context");
+
+      const userProfile = await Profile.findById(userId);
+      if (!userProfile) throw new Error("User profile not found");
+
+      const isFavorite = userProfile.favorites.includes(recipeId);
+
+      const update = isFavorite
+        ? { $pull: { favorites: recipeId } }
+        : { $addToSet: { favorites: recipeId } };
+
+      await Profile.findByIdAndUpdate(userId, update, { new: true });
+
+      // Update the recipe's favorite status
+      // return await RecipeHistory.findByIdAndUpdate(
+      //   recipeId,
+      //   { favorite: !recipe.favorite },
+      //   { new: true }
+      // );
       
-    //   if (!isFavorite) {
-    //   await Profile.findByIdAndUpdate(
-    //     context.user._id,
-    //     { $addToSet: { favorites: recipe._id } }, // Use $addToSet to avoid duplicates
-    //     { new: true }
-    //   );
-    // } else {
-    //   await Profile.findByIdAndUpdate(
-    //     context.user._id,
-    //     { $pull: { favorites: recipe._id } },
-    //     { new: true }
-    //   );
-    // }
-
-    const userProfile = await Profile.findById(context.user._id);
-    if (!userProfile) throw new Error("User profile not found");
-    const isFavorite = userProfile.favorites.includes(recipeId);
-
-    const update = isFavorite
-      ? { $pull: { favorites: recipeId } }
-      : { $addToSet: { favorites: recipeId } };
-  
-    await Profile.findByIdAndUpdate(context.user._id, update, { new: true });
-      return await RecipeHistory.findByIdAndUpdate(
+      const updatedRecipe = await RecipeHistory.findByIdAndUpdate(
         recipeId,
         { favorite: !recipe.favorite },
         { new: true }
+      ).select(
+        "_id title ingredients instructions comments favorite createdAt mealType"
       );
-        // return recipe;
+
+      if (!updatedRecipe) {
+        throw new Error("Failed to update recipe");
+      }
+
+      return updatedRecipe;
     },
   },
 };
